@@ -1,0 +1,5 @@
+{
+  "name": "Mini ERP with AI Insights",
+  "description": "An ERP-style data management tool that allows users to upload CSV or Excel files, view the data in a structured table, and generate AI-powered insights and summaries using the Gemini API.",
+  "requestFramePermissions": []
+}
