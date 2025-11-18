@@ -1,10 +1,13 @@
+
 import React, { useState } from 'react';
+import { useTranslation } from '../services/i18n';
 
 interface BarChartProps {
     data: { name: string; value: number }[];
 }
 
 const BarChart: React.FC<BarChartProps> = ({ data }) => {
+    const { t } = useTranslation();
     // Handle empty data case for maxValue to prevent errors
     const maxValue = data.length > 0 ? Math.max(...data.map(d => d.value)) : 1;
 

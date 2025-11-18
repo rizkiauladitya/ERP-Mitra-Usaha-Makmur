@@ -1,5 +1,7 @@
+
 import React from 'react';
 import { XCircleIcon } from './IconComponents';
+import { useTranslation } from '../services/i18n';
 
 interface ModalProps {
   isOpen: boolean;
@@ -9,6 +11,7 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, title, onClose, children }) => {
+  const { t } = useTranslation();
   if (!isOpen) return null;
 
   return (
@@ -25,7 +28,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, title, onClose, children }) => {
       >
         <div className="flex justify-between items-center mb-4">
           <h2 id="modal-title" className="text-xl font-bold text-slate-900 dark:text-white">{title}</h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" aria-label={t('Close')}>
             <XCircleIcon className="w-6 h-6" />
           </button>
         </div>

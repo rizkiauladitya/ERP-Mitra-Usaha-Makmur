@@ -2,6 +2,7 @@
 import React, { useState, useCallback } from 'react';
 import { UploadIcon } from './IconComponents';
 import Loader from './Loader';
+import { useTranslation } from '../services/i18n';
 
 interface FileUploadProps {
   onFileSelect: (file: File) => void;
@@ -10,6 +11,7 @@ interface FileUploadProps {
 
 const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect, isLoading }) => {
   const [isDragging, setIsDragging] = useState(false);
+  const { t } = useTranslation();
 
   const handleDragEnter = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -57,13 +59,13 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect, isLoading }) => {
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
             />
-            {isLoading ? <Loader message="Memproses file..."/> : (
+            {isLoading ? <Loader message={t('Processing file...')}/> : (
                 <div className="text-center">
                     <UploadIcon className="mx-auto h-12 w-12 text-slate-400" />
                     <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-                        <span className="font-semibold text-indigo-600 dark:text-indigo-400">Klik untuk mengunggah</span> atau seret dan lepas
+                        <span className="font-semibold text-indigo-600 dark:text-indigo-400">{t('Click to upload')}</span> {t('or drag and drop')}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">CSV atau Excel</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{t('CSV or Excel')}</p>
                 </div>
             )}
              <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={handleFileChange} accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />

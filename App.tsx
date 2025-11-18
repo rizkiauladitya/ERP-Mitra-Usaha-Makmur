@@ -10,6 +10,7 @@ import BarChart from './components/BarChart';
 import Modal from './components/Modal';
 import { SparklesIcon, XCircleIcon, DocumentTextIcon, HashtagIcon, ViewColumnsIcon, PlusIcon, PencilIcon, TrashIcon } from './components/IconComponents';
 import { generateSalesData, initialCustomers, initialInventory, initialIntegrations, initialUsers, initialTransactions } from './services/mockDataService';
+import { useTranslation } from './services/i18n';
 
 
 // --- Reusable UI Components ---
@@ -41,6 +42,7 @@ interface FormProps<T> {
 }
 
 const AddTransactionForm: React.FC<FormProps<any>> = ({ initialData, onSave, onClose }) => {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({ item: '', quantity: '', price: '', customer: '', date: new Date().toISOString().split('T')[0], ...initialData });
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -52,20 +54,21 @@ const AddTransactionForm: React.FC<FormProps<any>> = ({ initialData, onSave, onC
     };
      return (
         <form onSubmit={handleSubmit} className="space-y-4">
-            <div><label className="block text-sm font-medium">Tanggal</label><input type="date" name="date" value={formData.date} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
-            <div><label className="block text-sm font-medium">Item</label><input type="text" name="item" value={formData.item} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
-            <div><label className="block text-sm font-medium">Kuantitas</label><input type="number" name="quantity" value={formData.quantity} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
-            <div><label className="block text-sm font-medium">Harga (Rp)</label><input type="number" name="price" value={formData.price} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
-            <div><label className="block text-sm font-medium">Pelanggan</label><input type="text" name="customer" value={formData.customer} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
+            <div><label className="block text-sm font-medium">{t('Date')}</label><input type="date" name="date" value={formData.date} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
+            <div><label className="block text-sm font-medium">{t('Item')}</label><input type="text" name="item" value={formData.item} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
+            <div><label className="block text-sm font-medium">{t('Quantity')}</label><input type="number" name="quantity" value={formData.quantity} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
+            <div><label className="block text-sm font-medium">{t('Price')} (Rp)</label><input type="number" name="price" value={formData.price} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
+            <div><label className="block text-sm font-medium">{t('Customer')}</label><input type="text" name="customer" value={formData.customer} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
             <div className="flex justify-end space-x-3 pt-4">
-                <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium rounded-md border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700">Batal</button>
-                <button type="submit" className="px-4 py-2 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">{initialData ? 'Simpan Perubahan' : 'Simpan'}</button>
+                <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium rounded-md border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700">{t('Cancel')}</button>
+                <button type="submit" className="px-4 py-2 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">{initialData ? t('Save Changes') : t('Save')}</button>
             </div>
         </form>
     );
 }
 
 const AddSaleForm: React.FC<FormProps<any>> = ({ initialData, onSave, onClose }) => {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({ id: `INV-${Math.floor(10000 + Math.random() * 90000)}`, customer: '', date: new Date().toISOString().split('T')[0], total: '', status: 'Belum Lunas', ...initialData });
     
     useEffect(() => {
@@ -82,20 +85,21 @@ const AddSaleForm: React.FC<FormProps<any>> = ({ initialData, onSave, onClose })
     };
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
-            <div><label className="block text-sm font-medium">Invoice ID</label><input type="text" name="id" value={formData.id} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required readOnly/></div>
-            <div><label className="block text-sm font-medium">Pelanggan</label><input type="text" name="customer" value={formData.customer} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
-            <div><label className="block text-sm font-medium">Tanggal</label><input type="date" name="date" value={formData.date} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
-            <div><label className="block text-sm font-medium">Total (Rp)</label><input type="number" name="total" value={formData.total} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
-            <div><label className="block text-sm font-medium">Status</label><select name="status" value={formData.status} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600"><option>Belum Lunas</option><option>Lunas</option></select></div>
+            <div><label className="block text-sm font-medium">{t('Invoice ID')}</label><input type="text" name="id" value={formData.id} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required readOnly/></div>
+            <div><label className="block text-sm font-medium">{t('Customer')}</label><input type="text" name="customer" value={formData.customer} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
+            <div><label className="block text-sm font-medium">{t('Date')}</label><input type="date" name="date" value={formData.date} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
+            <div><label className="block text-sm font-medium">{t('Total Sales')} (Rp)</label><input type="number" name="total" value={formData.total} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
+            <div><label className="block text-sm font-medium">{t('Status')}</label><select name="status" value={formData.status} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600"><option>{t('Unpaid')}</option><option>{t('Paid')}</option></select></div>
             <div className="flex justify-end space-x-3 pt-4">
-                <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium rounded-md border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700">Batal</button>
-                <button type="submit" className="px-4 py-2 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">{initialData ? 'Simpan Perubahan' : 'Simpan'}</button>
+                <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium rounded-md border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700">{t('Cancel')}</button>
+                <button type="submit" className="px-4 py-2 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">{initialData ? t('Save Changes') : t('Save')}</button>
             </div>
         </form>
     );
 };
 
 const AddInventoryForm: React.FC<FormProps<any>> = ({ initialData, onSave, onClose }) => {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({ name: '', stock: '', location: '', price: '', sku: '', ...initialData });
     
     useEffect(() => {
@@ -116,19 +120,20 @@ const AddInventoryForm: React.FC<FormProps<any>> = ({ initialData, onSave, onClo
     };
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
-            <div><label className="block text-sm font-medium">Nama Barang</label><input type="text" name="name" value={formData.name} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
-            <div><label className="block text-sm font-medium">Stok</label><input type="number" name="stock" value={formData.stock} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
-            <div><label className="block text-sm font-medium">Lokasi</label><input type="text" name="location" value={formData.location} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
-            <div><label className="block text-sm font-medium">Harga (Rp)</label><input type="number" name="price" value={formData.price} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
+            <div><label className="block text-sm font-medium">{t('Item Name')}</label><input type="text" name="name" value={formData.name} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
+            <div><label className="block text-sm font-medium">{t('Stock Quantity')}</label><input type="number" name="stock" value={formData.stock} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
+            <div><label className="block text-sm font-medium">{t('Location')}</label><input type="text" name="location" value={formData.location} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
+            <div><label className="block text-sm font-medium">{t('Price')} (Rp)</label><input type="number" name="price" value={formData.price} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
             <div className="flex justify-end space-x-3 pt-4">
-                <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium rounded-md border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700">Batal</button>
-                <button type="submit" className="px-4 py-2 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">{initialData ? 'Simpan Perubahan' : 'Simpan'}</button>
+                <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium rounded-md border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700">{t('Cancel')}</button>
+                <button type="submit" className="px-4 py-2 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">{initialData ? t('Save Changes') : t('Save')}</button>
             </div>
         </form>
     );
 };
 
 const AddCustomerForm: React.FC<FormProps<any>> = ({ initialData, onSave, onClose }) => {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({ name: '', contact: '', address: '', email: '', history: '0 Transaksi', ...initialData });
     
     useEffect(() => {
@@ -145,19 +150,20 @@ const AddCustomerForm: React.FC<FormProps<any>> = ({ initialData, onSave, onClos
     };
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
-            <div><label className="block text-sm font-medium">Nama Pelanggan</label><input type="text" name="name" value={formData.name} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
+            <div><label className="block text-sm font-medium">{t('Customers')}</label><input type="text" name="name" value={formData.name} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
             <div><label className="block text-sm font-medium">Kontak</label><input type="text" name="contact" value={formData.contact} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
             <div><label className="block text-sm font-medium">Alamat</label><input type="text" name="address" value={formData.address} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
-            <div><label className="block text-sm font-medium">Email</label><input type="email" name="email" value={formData.email} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
+            <div><label className="block text-sm font-medium">{t('Email')}</label><input type="email" name="email" value={formData.email} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
             <div className="flex justify-end space-x-3 pt-4">
-                <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium rounded-md border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700">Batal</button>
-                <button type="submit" className="px-4 py-2 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">{initialData ? 'Simpan Perubahan' : 'Simpan'}</button>
+                <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium rounded-md border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700">{t('Cancel')}</button>
+                <button type="submit" className="px-4 py-2 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">{initialData ? t('Save Changes') : t('Save')}</button>
             </div>
         </form>
     );
 };
 
 const AddIntegrationForm: React.FC<FormProps<any>> = ({ initialData, onSave, onClose }) => {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({ name: '', type: 'Akuntansi', status: 'Tidak Terhubung', description: '', ...initialData });
     
     useEffect(() => {
@@ -177,16 +183,17 @@ const AddIntegrationForm: React.FC<FormProps<any>> = ({ initialData, onSave, onC
             <div><label className="block text-sm font-medium">Nama Layanan</label><input type="text" name="name" value={formData.name} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
             <div><label className="block text-sm font-medium">Tipe</label><select name="type" value={formData.type} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600"><option>Akuntansi</option><option>Payment Gateway</option><option>Logistik</option><option>Lainnya</option></select></div>
             <div><label className="block text-sm font-medium">Deskripsi</label><textarea name="description" value={formData.description} onChange={handleChange} rows={2} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required /></div>
-            <div><label className="block text-sm font-medium">Status Awal</label><select name="status" value={formData.status} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600"><option>Tidak Terhubung</option><option>Terhubung</option></select></div>
+            <div><label className="block text-sm font-medium">Status Awal</label><select name="status" value={formData.status} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600"><option>{t('Not Connected')}</option><option>{t('Connected')}</option></select></div>
             <div className="flex justify-end space-x-3 pt-4">
-                <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium rounded-md border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700">Batal</button>
-                <button type="submit" className="px-4 py-2 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">{initialData ? 'Simpan Perubahan' : 'Simpan'}</button>
+                <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium rounded-md border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700">{t('Cancel')}</button>
+                <button type="submit" className="px-4 py-2 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">{initialData ? t('Save Changes') : t('Save')}</button>
             </div>
         </form>
     );
 };
 
 const AddUserForm: React.FC<FormProps<any>> = ({ initialData, onSave, onClose }) => {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({ name: '', email: '', role: 'Staf', ...initialData });
     
     useEffect(() => {
@@ -203,12 +210,12 @@ const AddUserForm: React.FC<FormProps<any>> = ({ initialData, onSave, onClose })
     };
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
-            <div><label className="block text-sm font-medium">Nama Pengguna</label><input type="text" name="name" value={formData.name} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
-            <div><label className="block text-sm font-medium">Email</label><input type="email" name="email" value={formData.email} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
-            <div><label className="block text-sm font-medium">Role</label><select name="role" value={formData.role} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600"><option>Admin</option><option>Manajer</option><option>Staf</option></select></div>
+            <div><label className="block text-sm font-medium">{t('User Name')}</label><input type="text" name="name" value={formData.name} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
+            <div><label className="block text-sm font-medium">{t('Email')}</label><input type="email" name="email" value={formData.email} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600" required/></div>
+            <div><label className="block text-sm font-medium">{t('Role')}</label><select name="role" value={formData.role} onChange={handleChange} className="mt-1 block w-full border-slate-300 rounded-md shadow-sm dark:bg-slate-700 dark:border-slate-600"><option>{t('Admin')}</option><option>{t('Manager')}</option><option>{t('Staff')}</option></select></div>
             <div className="flex justify-end space-x-3 pt-4">
-                <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium rounded-md border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700">Batal</button>
-                <button type="submit" className="px-4 py-2 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">{initialData ? 'Simpan Perubahan' : 'Simpan'}</button>
+                <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium rounded-md border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700">{t('Cancel')}</button>
+                <button type="submit" className="px-4 py-2 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">{initialData ? t('Save Changes') : t('Save')}</button>
             </div>
         </form>
     );
@@ -218,24 +225,25 @@ const AddUserForm: React.FC<FormProps<any>> = ({ initialData, onSave, onClose })
 // --- View Components ---
 
 const DashboardView: React.FC<{stats: any}> = ({ stats }) => {
+    const { t } = useTranslation();
     const insights = [
-        "Penjualan 'Minyak Goreng 2L' meningkat 25% bulan ini, pertimbangkan untuk menambah stok.",
-        "Pelanggan 'Katering Ibu Wati' memiliki nilai pesanan rata-rata tertinggi.",
-        "Stok 'Indomie Goreng' akan habis dalam 2 minggu berdasarkan tren penjualan saat ini."
+        t('Insight 1'),
+        t('Insight 2'),
+        t('Insight 3'),
     ];
     return (
         <div className="space-y-8">
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Dashboard</h1>
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{t('Dashboard')}</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <StatCard title="Total Penjualan" value={`Rp ${stats.totalSales.toLocaleString('id-ID')}`} color="bg-blue-100 dark:bg-blue-500/20" icon={<HashtagIcon className="w-6 h-6 text-blue-600 dark:text-blue-400" />} />
-                <StatCard title="Item Inventaris" value={stats.totalInventoryItems} color="bg-emerald-100 dark:bg-emerald-500/20" icon={<ViewColumnsIcon className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />} />
-                <StatCard title="Total Pelanggan" value={stats.totalCustomers} color="bg-amber-100 dark:bg-amber-500/20" icon={<DocumentTextIcon className="w-6 h-6 text-amber-600 dark:text-amber-400" />} />
-                <StatCard title="Penjualan Bulan Ini" value={`Rp ${stats.thisMonthSales.toLocaleString('id-ID')}`} color="bg-indigo-100 dark:bg-indigo-500/20" icon={<HashtagIcon className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />} />
+                <StatCard title={t('Total Sales')} value={`Rp ${stats.totalSales.toLocaleString('id-ID')}`} color="bg-blue-100 dark:bg-blue-500/20" icon={<HashtagIcon className="w-6 h-6 text-blue-600 dark:text-blue-400" />} />
+                <StatCard title={t('Inventory Items')} value={stats.totalInventoryItems} color="bg-emerald-100 dark:bg-emerald-500/20" icon={<ViewColumnsIcon className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />} />
+                <StatCard title={t('Total Customers')} value={stats.totalCustomers} color="bg-amber-100 dark:bg-amber-500/20" icon={<DocumentTextIcon className="w-6 h-6 text-amber-600 dark:text-amber-400" />} />
+                <StatCard title={t('Sales This Month')} value={`Rp ${stats.thisMonthSales.toLocaleString('id-ID')}`} color="bg-indigo-100 dark:bg-indigo-500/20" icon={<HashtagIcon className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />} />
             </div>
             <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md border border-slate-200 dark:border-slate-700">
                 <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">
                     <SparklesIcon className="w-6 h-6 mr-2 text-indigo-500" />
-                    Wawasan AI
+                    {t('AI Insights')}
                 </h2>
                 <ul className="space-y-3">
                     {insights.map((insight, index) => (
@@ -251,21 +259,32 @@ const DashboardView: React.FC<{stats: any}> = ({ stats }) => {
 };
 
 const DataView: React.FC<{transactions: any[], onAdd: () => void}> = ({ transactions, onAdd }) => {
+    const { t } = useTranslation();
+    const headers = [t('Date'), t('Item'), t('Quantity'), t('Price'), t('Customer')];
+    const data = transactions.map(transaction => ({
+        [t('Date')]: transaction.date,
+        [t('Item')]: transaction.item,
+        [t('Quantity')]: transaction.quantity,
+        [t('Price')]: `Rp ${Number(transaction.price).toLocaleString('id-ID')}`,
+        [t('Customer')]: transaction.customer,
+    }));
+
     return (
         <div className="space-y-6">
              <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Tampilan Data Transaksi</h1>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{t('Transaction Data View')}</h1>
                 <button onClick={onAdd} className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
                     <PlusIcon className="w-5 h-5 mr-2 -ml-1"/>
-                    Tambah Data
+                    {t('Add Data')}
                 </button>
             </div>
-            <DataTable headers={["Tanggal", "Item", "Kuantitas", "Harga", "Pelanggan"]} data={transactions.map(t => ({...t, Harga: `Rp ${Number(t.price).toLocaleString('id-ID')}`, Kuantitas: t.quantity}))} />
+            <DataTable headers={headers} data={data} />
         </div>
     );
 };
 
 const ReportsView: React.FC<{salesData: any[]}> = ({ salesData }) => {
+    const { t } = useTranslation();
     const today = new Date();
     const threeMonthsAgo = new Date(today.getFullYear(), today.getMonth() - 3, 1);
     
@@ -276,8 +295,8 @@ const ReportsView: React.FC<{salesData: any[]}> = ({ salesData }) => {
         const start = new Date(startDate);
         const end = new Date(endDate);
         
-        const filtered = salesData.filter(t => {
-            const transactionDate = new Date(t.date);
+        const filtered = salesData.filter(sale => {
+            const transactionDate = new Date(sale.date);
             return transactionDate >= start && transactionDate <= end;
         });
 
@@ -300,37 +319,37 @@ const ReportsView: React.FC<{salesData: any[]}> = ({ salesData }) => {
 
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Laporan Penjualan</h1>
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{t('Sales Reports')}</h1>
             <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md border border-slate-200 dark:border-slate-700">
                 <div className="flex flex-wrap gap-4 mb-6 items-end">
                     <div>
-                        <label htmlFor="period" className="block text-sm font-medium text-slate-700 dark:text-slate-300">Periode</label>
+                        <label htmlFor="period" className="block text-sm font-medium text-slate-700 dark:text-slate-300">{t('Period')}</label>
                         <select id="period" className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-slate-700 dark:border-slate-600">
-                            <option>Bulan Ini</option>
-                            <option>3 Bulan Terakhir</option>
-                            <option>Tahun Ini</option>
+                            <option>{t('This Month')}</option>
+                            <option>{t('Last 3 Months')}</option>
+                            <option>{t('This Year')}</option>
                         </select>
                     </div>
                     <div>
-                        <label htmlFor="category" className="block text-sm font-medium text-slate-700 dark:text-slate-300">Kategori</label>
+                        <label htmlFor="category" className="block text-sm font-medium text-slate-700 dark:text-slate-300">{t('Category')}</label>
                         <select id="category" className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-slate-700 dark:border-slate-600">
-                            <option>Semua Produk</option>
-                            <option>Makanan</option>
-                            <option>Minuman</option>
-                             <option>Kebutuhan Rumah Tangga</option>
+                            <option>{t('All Products')}</option>
+                            <option>{t('Food')}</option>
+                            <option>{t('Beverages')}</option>
+                             <option>{t('Household Needs')}</option>
                         </select>
                     </div>
                     <div>
-                        <label htmlFor="startDate" className="block text-sm font-medium text-slate-700 dark:text-slate-300">Dari Tanggal</label>
+                        <label htmlFor="startDate" className="block text-sm font-medium text-slate-700 dark:text-slate-300">{t('From Date')}</label>
                         <input type="date" id="startDate" value={startDate} onChange={e => setStartDate(e.target.value)} className="mt-1 block w-full pl-3 pr-2 py-2 text-base border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-slate-700 dark:border-slate-600"/>
                     </div>
                     <div>
-                        <label htmlFor="endDate" className="block text-sm font-medium text-slate-700 dark:text-slate-300">Sampai Tanggal</label>
+                        <label htmlFor="endDate" className="block text-sm font-medium text-slate-700 dark:text-slate-300">{t('To Date')}</label>
                         <input type="date" id="endDate" value={endDate} onChange={e => setEndDate(e.target.value)} className="mt-1 block w-full pl-3 pr-2 py-2 text-base border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-slate-700 dark:border-slate-600"/>
                     </div>
                 </div>
                 <div>
-                     <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4">Tren Penjualan</h2>
+                     <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4">{t('Sales Trend')}</h2>
                      <div className="h-72 w-full">
                         <BarChart data={chartData} />
                      </div>
@@ -341,13 +360,14 @@ const ReportsView: React.FC<{salesData: any[]}> = ({ salesData }) => {
 };
 
 const SalesView: React.FC<{sales: any[], onAdd: () => void, onEdit: (sale: any) => void, onDelete: (saleId: string) => void}> = ({ sales, onAdd, onEdit, onDelete }) => {
+    const { t } = useTranslation();
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Penjualan</h1>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{t('Sales')}</h1>
                 <button onClick={onAdd} className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
                     <PlusIcon className="w-5 h-5 mr-2 -ml-1"/>
-                    Tambah Penjualan
+                    {t('Add Sale')}
                 </button>
             </div>
             <div className="bg-white dark:bg-slate-800 shadow-md rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
@@ -356,12 +376,12 @@ const SalesView: React.FC<{sales: any[], onAdd: () => void, onEdit: (sale: any) 
                         <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
                             <thead className="bg-slate-50 dark:bg-slate-700 sticky top-0">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">Invoice ID</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">Pelanggan</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">Tanggal</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">Total</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">Status</th>
-                                     <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">Aksi</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">{t('Invoice ID')}</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">{t('Customer')}</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">{t('Date')}</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">{t('Total Sales')}</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">{t('Status')}</th>
+                                     <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">{t('Actions')}</th>
                                 </tr>
                             </thead>
                             <tbody className="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700">
@@ -373,7 +393,7 @@ const SalesView: React.FC<{sales: any[], onAdd: () => void, onEdit: (sale: any) 
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-700 dark:text-slate-300">Rp {Number(sale.total).toLocaleString('id-ID')}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm">
                                             <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${sale.status === 'Lunas' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'}`}>
-                                                {sale.status}
+                                                {sale.status === 'Lunas' ? t('Paid') : t('Unpaid')}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-4">
@@ -392,13 +412,14 @@ const SalesView: React.FC<{sales: any[], onAdd: () => void, onEdit: (sale: any) 
 };
 
 const InventoryView: React.FC<{items: any[], onAdd: () => void, onEdit: (item: any) => void, onDelete: (sku: string) => void}> = ({ items, onAdd, onEdit, onDelete }) => {
+    const { t } = useTranslation();
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Inventaris</h1>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{t('Inventory')}</h1>
                 <button onClick={onAdd} className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
                     <PlusIcon className="w-5 h-5 mr-2 -ml-1"/>
-                    Tambah Inventaris
+                    {t('Add Inventory')}
                 </button>
             </div>
             <div className="bg-white dark:bg-slate-800 shadow-md rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
@@ -407,12 +428,12 @@ const InventoryView: React.FC<{items: any[], onAdd: () => void, onEdit: (item: a
                         <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
                             <thead className="bg-slate-50 dark:bg-slate-700 sticky top-0">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">Nama Item</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">SKU</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">Jumlah Stok</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">Lokasi</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">Harga</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">Aksi</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">{t('Item Name')}</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">{t('SKU')}</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">{t('Stock Quantity')}</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">{t('Location')}</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">{t('Price')}</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">{t('Actions')}</th>
                                 </tr>
                             </thead>
                             <tbody className="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700">
@@ -439,13 +460,14 @@ const InventoryView: React.FC<{items: any[], onAdd: () => void, onEdit: (item: a
 };
 
 const CustomersView: React.FC<{customers: any[], onAdd: () => void, onEdit: (customer: any) => void, onDelete: (customerEmail: string) => void}> = ({ customers, onAdd, onEdit, onDelete }) => {
+    const { t } = useTranslation();
     return (
         <div className="space-y-6">
              <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Pelanggan</h1>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{t('Customers')}</h1>
                 <button onClick={onAdd} className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
                     <PlusIcon className="w-5 h-5 mr-2 -ml-1"/>
-                    Tambah Pelanggan
+                    {t('Add Customer')}
                 </button>
             </div>
             <div className="max-h-[75vh] overflow-y-auto pr-2">
@@ -459,7 +481,7 @@ const CustomersView: React.FC<{customers: any[], onAdd: () => void, onEdit: (cus
                                  <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">Kontak: {customer.contact}</p>
                             </div>
                             <div className="text-sm text-slate-500 dark:text-slate-400 mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 flex justify-between items-center">
-                               <span>Riwayat: {customer.history}</span>
+                               <span>{t('Transaction History')}: {customer.history}</span>
                                <div className="space-x-3">
                                     <button onClick={() => onEdit(customer)} className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"><PencilIcon className="w-4 h-4"/></button>
                                     <button onClick={() => onDelete(customer.email)} className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"><TrashIcon className="w-4 h-4"/></button>
@@ -474,13 +496,14 @@ const CustomersView: React.FC<{customers: any[], onAdd: () => void, onEdit: (cus
 };
 
 const IntegrationsView: React.FC<{integrations: any[], onAdd: () => void, onToggleStatus: (name: string) => void}> = ({ integrations, onAdd, onToggleStatus }) => {
+    const { t } = useTranslation();
     return (
         <div className="space-y-6">
              <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Integrasi</h1>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{t('Integrations')}</h1>
                 <button onClick={onAdd} className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
                     <PlusIcon className="w-5 h-5 mr-2 -ml-1"/>
-                    Tambah Integrasi
+                    {t('Add Integration')}
                 </button>
             </div>
              <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-slate-200 dark:border-slate-700">
@@ -494,10 +517,10 @@ const IntegrationsView: React.FC<{integrations: any[], onAdd: () => void, onTogg
                             <div className="flex items-center space-x-4">
                                 <span className={`flex items-center text-sm font-medium ${int.status === 'Terhubung' ? 'text-green-600 dark:text-green-400' : 'text-slate-500'}`}>
                                     <span className={`w-2 h-2 mr-2 rounded-full ${int.status === 'Terhubung' ? 'bg-green-500' : 'bg-slate-400'}`}></span>
-                                    {int.status}
+                                    {int.status === 'Terhubung' ? t('Connected') : t('Not Connected')}
                                 </span>
                                 <button onClick={() => onToggleStatus(int.name)} className="px-4 py-1.5 text-sm font-medium border rounded-md hover:bg-slate-50 dark:hover:bg-slate-700 border-slate-300 dark:border-slate-600">
-                                    {int.status === 'Terhubung' ? 'Putuskan' : 'Hubungkan'}
+                                    {int.status === 'Terhubung' ? t('Disconnect') : t('Connect')}
                                 </button>
                             </div>
                         </li>
@@ -508,25 +531,26 @@ const IntegrationsView: React.FC<{integrations: any[], onAdd: () => void, onTogg
     );
 };
 
-const SettingsView: React.FC<{users: any[], onAddUser: () => void, onEditUser: (user: any) => void, onDeleteUser: (email: string) => void}> = ({ users, onAddUser, onEditUser, onDeleteUser }) => {
+const SettingsView: React.FC<{users: any[], onAddUser: () => void, onEditUser: (user: any) => void, onDeleteUser: (email: string) => void, onLanguageChange: (lang: any) => void}> = ({ users, onAddUser, onEditUser, onDeleteUser, onLanguageChange }) => {
+    const { t } = useTranslation();
     return (
         <div className="space-y-8">
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Pengaturan</h1>
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{t('Settings')}</h1>
             <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md border border-slate-200 dark:border-slate-700 max-w-4xl">
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Manajemen Pengguna</h2>
+                    <h2 className="text-lg font-semibold text-slate-900 dark:text-white">{t('User Management')}</h2>
                     <button onClick={onAddUser} className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
                        <PlusIcon className="w-5 h-5 mr-2 -ml-1"/>
-                       Tambah Pengguna
+                       {t('Add User')}
                     </button>
                 </div>
                  <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
                     <thead className="bg-slate-50 dark:bg-slate-700">
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">Nama</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">Email</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">Role</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">Aksi</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">{t('User Name')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">{t('Email')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">{t('Role')}</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-300 uppercase tracking-wider">{t('Actions')}</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700">
@@ -534,7 +558,7 @@ const SettingsView: React.FC<{users: any[], onAddUser: () => void, onEditUser: (
                             <tr key={user.email}>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900 dark:text-white">{user.name}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">{user.email}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">{user.role}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">{t(user.role)}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-4">
                                     <button onClick={() => onEditUser(user)} className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"><PencilIcon className="w-4 h-4"/></button>
                                     <button onClick={() => onDeleteUser(user.email)} className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"><TrashIcon className="w-4 h-4"/></button>
@@ -545,12 +569,17 @@ const SettingsView: React.FC<{users: any[], onAddUser: () => void, onEditUser: (
                 </table>
             </div>
              <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md border border-slate-200 dark:border-slate-700 max-w-4xl">
-                 <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Preferensi Aplikasi</h2>
+                 <h2 className="text-lg font-semibold text-slate-900 dark:text-white">{t('Application Preferences')}</h2>
                  <div className="mt-4">
-                    <label htmlFor="language" className="block text-sm font-medium text-slate-700 dark:text-slate-300">Bahasa</label>
-                    <select id="language" className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-slate-700 dark:border-slate-600 max-w-xs">
-                        <option>Bahasa Indonesia</option>
-                        <option>English</option>
+                    <label htmlFor="language" className="block text-sm font-medium text-slate-700 dark:text-slate-300">{t('Language')}</label>
+                    <select
+                        id="language"
+                        onChange={(e) => onLanguageChange(e.target.value)}
+                        defaultValue="id"
+                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md dark:bg-slate-700 dark:border-slate-600 max-w-xs"
+                    >
+                        <option value="id">Bahasa Indonesia</option>
+                        <option value="en">English</option>
                     </select>
                 </div>
             </div>
@@ -578,6 +607,7 @@ const parseCSV = (csvText: string): { headers: string[]; data: TableRow[] } => {
 
 
 const DataAnalysisView: React.FC = () => {
+    const { t } = useTranslation();
     const [data, setData] = useState<TableRow[]>([]);
     const [headers, setHeaders] = useState<string[]>([]);
     const [fileName, setFileName] = useState<string | null>(null);
@@ -658,7 +688,7 @@ const DataAnalysisView: React.FC = () => {
         <>
             {error && (
                 <div className="bg-red-100 border-l-4 border-red-500 text-red-800 p-4 rounded-md relative mb-6 dark:bg-red-900/20 dark:text-red-300" role="alert">
-                    <p className="font-bold">Terjadi Kesalahan</p>
+                    <p className="font-bold">{t('An Error Occurred')}</p>
                     <p>{error}</p>
                 </div>
             )}
@@ -666,28 +696,28 @@ const DataAnalysisView: React.FC = () => {
             {data.length === 0 ? (
                 <div className="flex flex-col items-center justify-center pt-16">
                     <div className="text-center mb-8">
-                        <h2 className="text-4xl font-bold text-slate-900 dark:text-white">Ubah Data Menjadi Wawasan</h2>
-                        <p className="mt-2 text-lg text-slate-600 dark:text-slate-400">Unggah file CSV Anda untuk memulai visualisasi dan analisis dengan AI.</p>
+                        <h2 className="text-4xl font-bold text-slate-900 dark:text-white">{t('Turn Data Into Insights')}</h2>
+                        <p className="mt-2 text-lg text-slate-600 dark:text-slate-400">{t('Upload your CSV file to start visualizing and analyzing with AI.')}</p>
                     </div>
                     <FileUpload onFileSelect={handleFileSelect} isLoading={isLoadingFile} />
                 </div>
             ) : (
                 <div className="space-y-8">
                     <div className="flex justify-between items-center">
-                         <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Analisis Data</h1>
+                         <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{t('Data Analysis')}</h1>
                          <button onClick={resetDataState} className="text-sm font-medium text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-500 flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors">
                             <XCircleIcon className="w-5 h-5" />
-                            Hapus Data
+                            {t('Clear Data')}
                         </button>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <StatCard title="Nama File" value={fileName || 'N/A'} color="bg-sky-100 dark:bg-sky-500/20" icon={<DocumentTextIcon className="w-6 h-6 text-sky-600 dark:text-sky-400" />} />
-                        <StatCard title="Total Baris" value={data.length.toLocaleString('id-ID')} color="bg-amber-100 dark:bg-amber-500/20" icon={<HashtagIcon className="w-6 h-6 text-amber-600 dark:text-amber-400" />} />
-                        <StatCard title="Total Kolom" value={headers.length} color="bg-emerald-100 dark:bg-emerald-500/20" icon={<ViewColumnsIcon className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />} />
+                        <StatCard title={t('File Name')} value={fileName || 'N/A'} color="bg-sky-100 dark:bg-sky-500/20" icon={<DocumentTextIcon className="w-6 h-6 text-sky-600 dark:text-sky-400" />} />
+                        <StatCard title={t('Total Rows')} value={data.length.toLocaleString('id-ID')} color="bg-amber-100 dark:bg-amber-500/20" icon={<HashtagIcon className="w-6 h-6 text-amber-600 dark:text-amber-400" />} />
+                        <StatCard title={t('Total Columns')} value={headers.length} color="bg-emerald-100 dark:bg-emerald-500/20" icon={<ViewColumnsIcon className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />} />
                     </div>
                     <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
                         <div className="xl:col-span-3">
-                            <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">Tabel Data</h2>
+                            <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">{t('Data Table')}</h2>
                             <DataTable headers={headers} data={data} />
                         </div>
                         <div className="xl:col-span-2">
@@ -702,11 +732,11 @@ const DataAnalysisView: React.FC = () => {
 
 
 export default function App() {
+  const { t, setLanguage } = useTranslation();
   const [activeView, setActiveView] = useState('dashboard');
   
   // --- Centralized State Management ---
   const [transactions, setTransactions] = useState(initialTransactions);
-  // FIX: `generateSalesData` does not take any arguments.
   const [sales, setSales] = useState(() => generateSalesData());
   const [inventory, setInventory] = useState(initialInventory);
   const [customers, setCustomers] = useState(initialCustomers);
@@ -756,8 +786,8 @@ export default function App() {
   const handleDeleteSale = (saleId: string) => {
     setDeleteConfirmation({
         isOpen: true,
-        title: "Hapus Penjualan",
-        message: `Apakah Anda yakin ingin menghapus penjualan dengan Invoice ID ${saleId}?`,
+        title: t("Delete Sale"),
+        message: t('Delete Sale Confirmation', { id: saleId }),
         onConfirm: () => {
             setSales(prev => prev.filter(s => s.id !== saleId));
             closeDeleteConfirmation();
@@ -778,8 +808,8 @@ export default function App() {
    const handleDeleteInventory = (sku: string) => {
     setDeleteConfirmation({
         isOpen: true,
-        title: "Hapus Item Inventaris",
-        message: `Apakah Anda yakin ingin menghapus item dengan SKU ${sku}?`,
+        title: t("Delete Inventory Item"),
+        message: t('Delete Inventory Confirmation', { sku }),
         onConfirm: () => {
             setInventory(prev => prev.filter(i => i.sku !== sku));
             closeDeleteConfirmation();
@@ -803,8 +833,8 @@ export default function App() {
    const handleDeleteCustomer = (customerEmail: string) => {
     setDeleteConfirmation({
         isOpen: true,
-        title: "Hapus Pelanggan",
-        message: `Apakah Anda yakin ingin menghapus pelanggan dengan email ${customerEmail}?`,
+        title: t("Delete Customer"),
+        message: t('Delete Customer Confirmation', { email: customerEmail }),
         onConfirm: () => {
             setCustomers(prev => prev.filter(c => c.email !== customerEmail));
             closeDeleteConfirmation();
@@ -830,8 +860,8 @@ export default function App() {
   const handleDeleteUser = (userEmail: string) => {
      setDeleteConfirmation({
         isOpen: true,
-        title: "Hapus Pengguna",
-        message: `Apakah Anda yakin ingin menghapus pengguna dengan email ${userEmail}?`,
+        title: t("Delete User"),
+        message: t('Delete User Confirmation', { email: userEmail }),
         onConfirm: () => {
             setUsers(prev => prev.filter(u => u.email !== userEmail));
             closeDeleteConfirmation();
@@ -843,13 +873,13 @@ export default function App() {
   const renderContent = () => {
     switch (activeView) {
         case 'dashboard': return <DashboardView stats={dashboardStats}/>;
-        case 'dataview': return <DataView transactions={transactions} onAdd={() => openModal('Tambah Data Transaksi', <AddTransactionForm onSave={handleAddTransaction} onClose={closeModal}/>)} />;
+        case 'dataview': return <DataView transactions={transactions} onAdd={() => openModal(t('Add Transaction Data'), <AddTransactionForm onSave={handleAddTransaction} onClose={closeModal}/>)} />;
         case 'reports': return <ReportsView salesData={sales} />;
-        case 'sales': return <SalesView sales={sales} onAdd={() => openModal('Tambah Penjualan Baru', <AddSaleForm onSave={handleSaveSale} onClose={closeModal}/>)} onEdit={(sale) => openModal('Edit Penjualan', <AddSaleForm initialData={sale} onSave={handleSaveSale} onClose={closeModal}/>)} onDelete={handleDeleteSale} />;
-        case 'inventory': return <InventoryView items={inventory} onAdd={() => openModal('Tambah Item Inventaris', <AddInventoryForm onSave={handleSaveInventory} onClose={closeModal}/>)} onEdit={(item) => openModal('Edit Item Inventaris', <AddInventoryForm initialData={item} onSave={handleSaveInventory} onClose={closeModal}/>)} onDelete={handleDeleteInventory} />;
-        case 'customers': return <CustomersView customers={customers} onAdd={() => openModal('Tambah Pelanggan Baru', <AddCustomerForm onSave={handleSaveCustomer} onClose={closeModal}/>)} onEdit={(customer) => openModal('Edit Pelanggan', <AddCustomerForm initialData={{...customer, originalEmail: customer.email}} onSave={handleSaveCustomer} onClose={closeModal}/>)} onDelete={handleDeleteCustomer} />;
-        case 'integrations': return <IntegrationsView integrations={integrations} onAdd={() => openModal('Tambah Integrasi Baru', <AddIntegrationForm onSave={handleAddIntegration} onClose={closeModal}/>)} onToggleStatus={handleToggleIntegrationStatus} />;
-        case 'settings': return <SettingsView users={users} onAddUser={() => openModal('Tambah Pengguna Baru', <AddUserForm onSave={handleSaveUser} onClose={closeModal}/>)} onEditUser={(user) => openModal('Edit Pengguna', <AddUserForm initialData={{...user, originalEmail: user.email}} onSave={handleSaveUser} onClose={closeModal}/>)} onDeleteUser={handleDeleteUser} />;
+        case 'sales': return <SalesView sales={sales} onAdd={() => openModal(t('Add New Sale'), <AddSaleForm onSave={handleSaveSale} onClose={closeModal}/>)} onEdit={(sale) => openModal(t('Edit Sale'), <AddSaleForm initialData={sale} onSave={handleSaveSale} onClose={closeModal}/>)} onDelete={handleDeleteSale} />;
+        case 'inventory': return <InventoryView items={inventory} onAdd={() => openModal(t('Add Inventory Item'), <AddInventoryForm onSave={handleSaveInventory} onClose={closeModal}/>)} onEdit={(item) => openModal(t('Edit Inventory Item'), <AddInventoryForm initialData={item} onSave={handleSaveInventory} onClose={closeModal}/>)} onDelete={handleDeleteInventory} />;
+        case 'customers': return <CustomersView customers={customers} onAdd={() => openModal(t('Add New Customer'), <AddCustomerForm onSave={handleSaveCustomer} onClose={closeModal}/>)} onEdit={(customer) => openModal(t('Edit Customer'), <AddCustomerForm initialData={{...customer, originalEmail: customer.email}} onSave={handleSaveCustomer} onClose={closeModal}/>)} onDelete={handleDeleteCustomer} />;
+        case 'integrations': return <IntegrationsView integrations={integrations} onAdd={() => openModal(t('Add New Integration'), <AddIntegrationForm onSave={handleAddIntegration} onClose={closeModal}/>)} onToggleStatus={handleToggleIntegrationStatus} />;
+        case 'settings': return <SettingsView users={users} onAddUser={() => openModal(t('Add New User'), <AddUserForm onSave={handleSaveUser} onClose={closeModal}/>)} onEditUser={(user) => openModal(t('Edit User'), <AddUserForm initialData={{...user, originalEmail: user.email}} onSave={handleSaveUser} onClose={closeModal}/>)} onDeleteUser={handleDeleteUser} onLanguageChange={setLanguage} />;
         case 'data-analysis':
         default:
             return <DataAnalysisView />;
@@ -862,7 +892,7 @@ export default function App() {
         <div className="container mx-auto flex items-center justify-between">
             <h1 className="text-xl font-bold text-slate-900 dark:text-white flex items-center">
                 <SparklesIcon className="w-6 h-6 mr-2 text-indigo-500"/>
-                ERP Mitra Usaha Makmur
+                {t('ERP Mitra Usaha Makmur')}
             </h1>
         </div>
       </header>
@@ -883,8 +913,8 @@ export default function App() {
                 <div className="text-slate-700 dark:text-slate-300">
                     <p>{deleteConfirmation.message}</p>
                     <div className="flex justify-end space-x-3 pt-6">
-                        <button onClick={closeDeleteConfirmation} className="px-4 py-2 text-sm font-medium rounded-md border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700">Batal</button>
-                        <button onClick={deleteConfirmation.onConfirm} className="px-4 py-2 text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700">Hapus</button>
+                        <button onClick={closeDeleteConfirmation} className="px-4 py-2 text-sm font-medium rounded-md border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700">{t('Cancel')}</button>
+                        <button onClick={deleteConfirmation.onConfirm} className="px-4 py-2 text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700">{t('Delete')}</button>
                     </div>
                 </div>
             </Modal>
